@@ -1,0 +1,2 @@
+alter table T_FRAMEWORK_PRI_EXPLORER enable constraint  FK_FRAMEWORK_PRI_EXPLORER;
+alter table T_FRAMEWORK_PRI_EXPLORER enable constraint  FK_FRAMEWORK_PRI_EXPLORER_R;

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_ibus_log">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_ibus_log" type="com.huawei.imp.framework.model.ibus.log.domain.IbusLogerEntity"/>
+  	<resultMap id="rm_ibus_log" class="_ibus_log">
+  		<result property="transID"    column="transID"  	javaType="string"/>
+  		<result property="procID" 	  column="procID" 	    javaType="string"/>
+  		<result property="date1" 	  column="date1" 		javaType="date"/>
+  		<result property="date2" 	  column="date2" 		javaType="date"/>
+  		<result property="url" 		  column="url" 		    javaType="string"/>
+  		<result property="exception"  column="exception"    javaType="string"/>
+  		<result property="message1a"  column="message1a"    javaType="string"/>
+  		<result property="message1b"  column="message1b"    javaType="string"/>
+  		<result property="message1c"  column="message1c"    javaType="string"/>
+  		<result property="message2a"  column="message2a"    javaType="string"/>
+  		<result property="message2b"  column="message2b"    javaType="string"/>
+  		<result property="message2c"  column="message2c"    javaType="string"/>
+  		<result property="server"     column="server"       javaType="string"/>
+  	</resultMap>
+  	
+  	<insert id="insert" parameterClass="_ibus_log">
+  	insert into t_framework_ibus_log(
+			procid,
+			transid,
+			date1,
+			date2,
+			url,
+			exception,
+			message1a,
+			message1b,
+			message1c,
+			message2a,
+			message2b,
+			message2c,
+			server)
+    values (
+    		#procID#,
+			#transID#,
+			#date1#,
+			#date2#,
+			#url#,
+			#exception#,
+			#message1a#,
+			#message1b#,
+			#message1c#,
+			#message2a#,
+			#message2b#,
+			#message2c#,
+			#server#)
+  	</insert>
+  	
+  	<delete id="delete" parameterClass="_ibus_log">
+  	delete t_framework_ibus_log where id = #procID#
+  	</delete>
+  	
+  	<select id="select" resultMap="rm_ibus_log" parameterClass="int">
+  		select 
+			transid,
+			procid,
+			date1,
+			date2,
+			url,
+			exception,
+			message1a,
+			message1b,
+			message1c,
+			message2a,
+			message2b,
+			message2c,
+			server
+  		from t_framework_ibus_log t
+  		where 
+  			rownum &lt;=#value#
+  		order by procid
+  	</select>
+</sqlMap>   
+    

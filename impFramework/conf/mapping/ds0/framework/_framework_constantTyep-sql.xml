@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_constantType">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_constantType" type="com.huawei.imp.framework.constant.domain.ConstantType"/>
+  	
+  	<resultMap class="_constantType" id="rm_constantType">  		
+  		<result property="modelName" column="MODELNAME" javaType="string"/>
+  		<result property="modelID" column="MODELID" javaType="java.lang.Integer"/>  		
+  	</resultMap>
+  	
+  	<!-- 保存 -->
+  	<insert id="insert" parameterClass="_constantType">
+  		insert into t_framework_constant_model(
+  			modelid,
+  			modelname
+  		)
+  		values(
+  			#modelID#,
+  			#modelName#
+  		)
+  	</insert>
+  	
+  	<!-- 更新 -->
+  	<update id="update" parameterClass="_constantType">
+  		update t_framework_constant_model t
+  		set 
+			t.modelid = #modelID#,
+			t.modelname = #modelName#
+		where 
+			t.modelid = #modelID#	
+  	</update> 
+  	
+  	
+  	<!-- 删除 -->
+  	<delete id="delete" parameterClass="java.util.Map">
+  		delete from t_framework_constant_model 
+  		where modelid in
+  		<iterate property = "modelids" open= "(" close = ")" conjunction = ",">
+               #modelids[]#
+        </iterate>   
+  	</delete>
+  	
+  	<!-- 查询全部 -->
+  	<select id="selectAll" resultClass="_constantType">
+  		select   			
+  			modelid,
+  			modelname
+  		from t_framework_constant_model
+  	</select> 
+  	
+  	<!-- 查询总行数 -->
+  	<select id="countForPage" resultClass="int">
+  		select count(*)
+  		from t_framework_constant_model
+  	</select>
+  	
+  	<!-- 查询 -->
+  	<select id="queryForPage" resultClass="_constantType" parameterClass="java.util.Map">
+  		select 
+  			modelid,
+  			modelname
+  		from t_framework_constant_model
+  		<isNotEmpty property="modelID">
+  			and modelid = #modelID#	
+  		</isNotEmpty>
+  		<isNotEmpty property="name">
+  			and modelname = #name#	
+  		</isNotEmpty>
+  	</select>	
+</sqlMap>   
+    

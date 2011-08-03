@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_privilege_explorer">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="explorer" type="com.huawei.imp.framework.model.privilege.domain.ExplorerIndex"/>
+  	
+  	<resultMap id="resultMap.explorer" class="explorer">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="path" column="PATH" />
+		<result property="parent.id" column="PARENTID" javaType="long" nullValue="-1"/>
+		<result property="right.id" column="RIGHTID" javaType="long" nullValue="-1"/>
+		<result property="order" column="EORDER" javaType="Integer" nullValue="0"/>
+  	</resultMap>
+  
+  	<insert id="insert" parameterClass="explorer">  
+   		INSERT INTO T_FRAMEWORK_PRI_EXPLORER(
+			NAME,   
+			PATH,
+			PARENTID,
+			<!-- 如果是-1，表示没有权限设置 -->
+			<isNotEqual property="right.id" compareValue="-1">
+			RIGHTID,
+			</isNotEqual>
+			EORDER)
+			VALUES(
+  			#name#,
+  			#path#,
+  			#parent.id#,
+  			<isNotEqual property="right.id" compareValue="-1">
+			#right.id#,
+			</isNotEqual>
+  			#order#
+  			)
+  			<selectKey resultClass="long" keyProperty="id">  
+				<![CDATA[SELECT LAST_INSERT_ID() AS ID ]]>
+			</selectKey>
+  	</insert>
+  	
+  	<select id="selectAll" resultMap="resultMap.explorer">  
+   		SELECT 
+  			ID,
+			NAME,   
+			PATH,
+			PARENTID,
+			RIGHTID,
+			EORDER
+  		FROM 
+  			T_FRAMEWORK_PRI_EXPLORER T
+  	</select>
+  	
+  	<!-- 更新语句 -->
+  	<update id="update" parameterClass="explorer">
+  		UPDATE
+  			T_FRAMEWORK_PRI_EXPLORER
+  		<dynamic prepend="SET">
+	  			<!-- 如果是-1，表示没有权限设置 -->
+			<isNotEqual prepend="," property="right.id" compareValue="-1">
+				RIGHTID = #right.id#
+			</isNotEqual>
+			<isEqual prepend="," property="right.id" compareValue="-1">
+				RIGHTID = null
+			</isEqual>
+	  		<isNotNull prepend="," property="name">
+		  		NAME = #name#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="path">
+		  		PATH = #path#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="order">
+		  		EORDER = #order#
+		  	</isNotNull>
+		  	WHERE ID = #id#
+		</dynamic>
+  	</update>
+  	
+  	<delete id="delete" parameterClass="long">
+  		DELETE FROM T_FRAMEWORK_PRI_EXPLORER
+  		WHERE ID = #value#
+  	</delete>
+</sqlMap>   
+    

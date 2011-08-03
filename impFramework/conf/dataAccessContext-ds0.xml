@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for JPetStore's data access layer.
+  - Accessed by business layer objects defined in "applicationContext.xml"
+  - (see web.xml's "contextConfigLocation").
+  -
+  - This version of the data access layer works on a combined database,
+  - using a local DataSource with DataSourceTransactionManager. It does not
+  - need any JTA support in the container: It will run as-is in plain Tomcat.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+	<bean id="dataSource0"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+        <property name="driverClass" value="${ds0.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${ds0.jdbc.url}" />
+        <property name="user" value="${ds0.jdbc.username}" />
+        <property name="password" value="${ds0.jdbc.password}" />
+        <property name="minPoolSize" value="${ds0.jdbc.minPoolSize}" />
+        <property name="maxPoolSize" value="${ds0.jdbc.maxPoolSize}" />
+        <property name="maxIdleTime" value="${ds0.jdbc.maxIdleTime}" />
+        <property name="acquireIncrement" value="${ds0.jdbc.acquireIncrement}" />
+        <property name="maxStatements" value="${ds0.jdbc.maxStatements}" />
+        <property name="initialPoolSize" value="${ds0.jdbc.initialPoolSize}" />
+        <property name="idleConnectionTestPeriod" value="${ds0.jdbc.idleConnectionTestPeriod}" />
+        <property name="acquireRetryAttempts" value="${ds0.jdbc.acquireRetryAttempts}" />
+        <property name="acquireRetryDelay" value="${ds0.jdbc.acquireRetryDelay}" />
+        <property name="breakAfterAcquireFailure" value="${ds0.jdbc.breakAfterAcquireFailure}" />
+        <property name="testConnectionOnCheckout" value="${ds0.jdbc.testConnectionOnCheckout}" />
+    </bean>
+	<!-- 
+	<bean id="sqlExecutor" class="com.ahli.util.OracleSqlExecutor"></bean>
+	 -->
+	
+	<bean id="sqlMapClient0" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"> 
+        <property name="dataSource" ref="dataSource0"></property>
+        <property name="lobHandler" ref="defaultLobHandler"/>
+        <property name="configLocation"> 
+            <value>classpath:mapping/ds0/SqlMapConfig-ds0.xml</value> 
+        </property>
+        <property name="mappingLocations"> 
+            <value>classpath*:/mapping/ds0/**/*-sql${ds0}.xml</value>
+        </property>
+        <!-- 
+        	<property name="mappingLocations" value="/model/*sql.xml"/>
+         com.ahli.util.OracleSqlExecutor
+         -->
+    </bean>
+    
+    <bean id="sqlMapClientTemplate0" class="org.springframework.orm.ibatis.SqlMapClientTemplate"> 
+        <property name="sqlMapClient" ref="sqlMapClient0"/> 
+    </bean>  
+    
+	<bean id="nativeQueryForOracle0" class="org.oproject.framework.orm.ibatis.query.OracleNativeQuery" />
+	<bean id="nativeQueryForMySQL0" class="org.oproject.framework.orm.ibatis.query.MysqlNativeQuery" />
+	<!-- 自定义SQL执行器 -->
+	<bean id="customizedSQLExecutor0" class="org.oproject.framework.orm.ibatis.CustomizedSQLExecutor"
+		init-method="init" lazy-init="false">
+		<property name="nativeQuery" ref="nativeQueryForMySQL0" />
+		<property name="sqlMapClient" ref="sqlMapClient0" />
+	</bean> 
+</beans>

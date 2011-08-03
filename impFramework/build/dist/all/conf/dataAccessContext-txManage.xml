@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for JPetStore's data access layer.
+  - Accessed by business layer objects defined in "applicationContext.xml"
+  - (see web.xml's "contextConfigLocation").
+  -
+  - This version of the data access layer works on a combined database,
+  - using a local DataSource with DataSourceTransactionManager. It does not
+  - need any JTA support in the container: It will run as-is in plain Tomcat.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- 初始化数据源事务管理对象 -->
+    <bean id="transactionManager0" 
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+        <property name="dataSource" ref="dataSource0"/> 
+    </bean>
+	<!-- 
+	<bean id="transactionManager1" 
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+        <property name="dataSource" ref="dataSource1"/> 
+    </bean>
+	
+	<bean id="transactionManagerDerby" 
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+        <property name="dataSource" ref="dataSourceDerby"/> 
+    </bean>
+    
+    <bean id="transactionManagerDerbyM" 
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+        <property name="dataSource" ref="dataSourceDerbyM"/> 
+    </bean>
+     -->
+	<!-- 配置当前系统默认数据源事务管理的@Transactional支持 -->
+	<tx:annotation-driven transaction-manager="transactionManager0"/>
+	
+	<!-- 配置多数据源统一事务管理，支持@MultTransactional标签 -->
+    <aop:config>
+    	<aop:pointcut id="defaultTransactionalPointcut" expression="@annotation(com.huawei.imp.framework.transaction.aspectj.annotation.MultTransactional)"/>
+    	<aop:advisor order="-4" pointcut-ref="defaultTransactionalPointcut" advice-ref="txAdviceForTransactionManager0"/>
+    	<!-- 
+    	<aop:advisor order="-3" pointcut-ref="defaultTransactionalPointcut" advice-ref="txAdviceForTransactionManager1"/>
+    	<aop:advisor order="-2" pointcut-ref="defaultTransactionalPointcut" advice-ref="txAdviceForTransactionManagerDerby"/>
+    	<aop:advisor order="-1" pointcut-ref="defaultTransactionalPointcut" advice-ref="txAdviceForTransactionManagerDerbyM"/>
+    	 -->
+    </aop:config>
+    
+    <tx:advice id="txAdviceForTransactionManager0" transaction-manager="transactionManager0">
+    	<tx:attributes>
+    		<tx:method name="*"/>
+    	</tx:attributes>
+    </tx:advice>
+    
+    <!-- 
+    <tx:advice id="txAdviceForTransactionManager1" transaction-manager="transactionManager1">
+    	<tx:attributes>
+    		<tx:method name="*"/>
+    	</tx:attributes>
+    </tx:advice>
+    <tx:advice id="txAdviceForTransactionManagerDerby" transaction-manager="transactionManagerDerby">
+    	<tx:attributes>
+    		<tx:method name="*"/>
+    	</tx:attributes>
+    </tx:advice>
+    <tx:advice id="txAdviceForTransactionManagerDerbyM" transaction-manager="transactionManagerDerbyM">
+    	<tx:attributes>
+    		<tx:method name="*"/>
+    	</tx:attributes>
+    </tx:advice> -->
+</beans>

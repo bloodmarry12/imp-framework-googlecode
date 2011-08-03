@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_config">  
+	<typeAlias alias="sysConfig" type="com.huawei.imp.framework.config.domain.SysConfig"/>
+  	<!-- 定义结果集合 -->
+  	<resultMap id="resultMap.sysConfig" class="sysConfig">
+		<result property="key" 			column="KEY"  			javaType="string"/>
+		<result property="name" 		column="NAME" 			javaType="string"/>
+		<result property="value" 		column="VALUE" 			javaType="string"/>
+		<result property="description" 	column="DESCRIPTION" 	javaType="string"/>
+		<result property="scope" 		column="scope" 			javaType="string"/>
+		<result property="address" 	    column="address" 	    javaType="string"/>
+  	</resultMap>
+  	<!-- 查询语句 -->
+  	<select id="selectAll" resultMap="resultMap.sysConfig">
+   		SELECT 
+  			*
+  		FROM 
+  			T_FRAMEWORK_CONFIG T
+  		ORDER BY KEY
+  	</select>
+  	
+  	<update id="update" parameterClass="sysConfig">
+  		UPDATE T_FRAMEWORK_CONFIG T
+  		SET 
+			T.NAME = #name#,
+			T.VALUE = #value#,
+			T.DESCRIPTION = #description#
+		WHERE 
+			T.KEY = #key#	AND T.ADDRESS = #address#
+  	</update>
+  	
+  	<!-- 查询语句 -->
+  	<select id="selectByProperties" resultMap="resultMap.sysConfig" parameterClass="java.lang.String">
+   		select t.key,
+		       t.name,
+		       t.value,
+		       t.description,
+		       t.scope,
+		       t.address
+		  from t_framework_config t
+		 where t.scope = '-1'
+		   and t.address = #value#
+  	</select>
+  	
+  	<!-- 新增配置 -->
+  	<insert id="insert" parameterClass="sysConfig">
+  	    insert into t_framework_config
+  	                (key,name,value,description,scope,address)
+  	         values (#key#,#name#,#value#,#description#,#scope#,#address#)
+  	</insert>
+  	
+  	<!-- 查询语句 -->
+  	<select id="selectGlobalConfig" resultMap="resultMap.sysConfig">
+   		select t.key,
+		       t.name,
+		       t.value,
+		       t.description,
+		       t.scope,
+		       t.address
+		  from t_framework_config t
+		 where t.scope = '0'
+  	</select>
+  	
+  	<!-- 查询语句 -->
+  	<select id="selectPlatConfig" resultMap="resultMap.sysConfig" resultClass="java.lang.String">
+   		select t.key,
+		       t.name,
+		       t.value,
+		       t.description,
+		       t.scope,
+		       t.address
+		  from t_framework_config t
+		 where t.scope = #value#
+  	</select>
+</sqlMap> 
+    

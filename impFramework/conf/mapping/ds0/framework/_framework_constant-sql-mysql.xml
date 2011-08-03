@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_constant">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_constant" type="com.huawei.imp.framework.constant.domain.Constant"/>
+  	<resultMap class="_constant" id="rm_constant">
+  		<result property="id" column="ID" javaType="java.lang.Long"/>
+  		<result property="value" column="VALUE" javaType="string"/>
+  		<result property="name" column="NAME" javaType="string"/>
+  		<result property="modelID" column="MODELID" javaType="java.lang.Integer"/>
+  		<result property="order" column="SEQ" javaType="java.lang.Integer"/>
+  	</resultMap>
+  	
+  	<select id="selectAll" resultMap="rm_constant">
+  		SELECT 
+  			ID,
+  			VALUE,
+  			NAME,
+  			MODELID,
+  			SEQ
+  		FROM T_FRAMEWORK_CONSTANT
+  	</select>
+  	
+  	<insert id="insert" parameterClass="_constant">
+  		INSERT INTO T_FRAMEWORK_CONSTANT
+  		(
+  			VALUE,
+  			NAME,
+  			MODELID,
+  			SEQ
+  		)
+  		VALUES
+  		(
+  		#value#,
+  		#name#,
+  		#modelID#,
+  		#order#
+  		)
+  		<selectKey resultClass="long" keyProperty="id">  
+			<![CDATA[SELECT LAST_INSERT_ID() AS ID ]]>
+		</selectKey>
+  	</insert>
+  	
+  	<delete id="delete" parameterClass="map">
+  		DELETE FROM T_FRAMEWORK_CONSTANT
+  		WHERE ID IN
+  		<iterate property = "ids" open= "(" close = ")" conjunction = ",">
+               #ids[]#
+        </iterate>
+  	</delete>
+  	
+  	<update id="update" parameterClass="_constant">
+  		UPDATE T_FRAMEWORK_CONSTANT
+  		SET ID = #id#,
+  		VALUE = #value#,
+  		NAME = #name#,
+  		MODELID = #modelID#,
+  		ORDER = #order#
+  		WHERE ID = #id#
+  	</update>
+  	
+  	<select id="countForPage" resultClass="int">
+  		SELECT COUNT(*)
+  		FROM T_FRAMEWORK_CONSTANT
+  	</select>
+  	
+  	<select id="queryForPage" resultMap="rm_constant" parameterClass="map">
+  		SELECT 
+  			ID,
+  			VALUE,
+  			NAME,
+  			MODELID,
+  			SEQ
+  		FROM T_FRAMEWORK_CONSTANT
+  	</select>
+  	
+  	<select id="queryForlist" resultMap="rm_constant" parameterClass="map">
+  		SELECT 
+  			ID,
+  			VALUE,
+  			NAME,
+  			MODELID,
+  			SEQ
+  		FROM T_FRAMEWORK_CONSTANT
+  		WHERE 1=1
+  		<isNotEmpty property="modelid">
+  			AND MODELID = #modelid#	
+  		</isNotEmpty>
+  	</select>
+  	
+  	<select id="sequence" resultClass="long">
+  		select seq_framework_constant.nextval from dual
+  	</select>
+</sqlMap>   
+    

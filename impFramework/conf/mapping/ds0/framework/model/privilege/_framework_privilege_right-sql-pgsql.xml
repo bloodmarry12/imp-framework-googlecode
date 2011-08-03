@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_privilege_right">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="right" type="com.huawei.imp.framework.model.privilege.domain.Right"/>
+  	
+  	<resultMap id="resultMap.right" class="right">
+		<result property="id" column="ID" />
+		<result property="code" column="CODE" />
+		<result property="rightName" column="RIGHTNAME"/>
+		<result property="description" column="DESCRIPTION" />
+		<result property="parent.id" column="PARENTID" javaType="long" nullValue="-1"/>
+  	</resultMap>
+  	
+  	<insert id="insert" parameterClass="right">  
+   		INSERT INTO T_FRAMEWORK_PRI_RIGHT(
+			CODE,   
+			DESCRIPTION,
+			RIGHTNAME,
+			PARENTID)
+  		VALUES(
+  			#code#,
+  			#description#,
+  			#rightName#,
+  			#parent.id#)
+		   <selectKey resultClass="long" type="post" keyProperty="id" >
+	        select currval('seq_framework_pri_right') as ID
+	    </selectKey>electKey>
+  	</insert>
+  	
+  	<select id="selectAll" resultMap="resultMap.right">  
+   		SELECT 
+  			ID,
+			CODE,   
+			DESCRIPTION,
+			RIGHTNAME,
+			PARENTID
+  		FROM 
+  			T_FRAMEWORK_PRI_RIGHT T
+  	</select>
+  	
+  	<update id="update" parameterClass="right">
+  		UPDATE
+  			T_FRAMEWORK_PRI_RIGHT 
+  		<dynamic prepend="SET">
+	  		<isNotNull prepend="," property="rightName">
+		  			RIGHTNAME = #rightName#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="code">
+		  			CODE = #code#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="description">
+		  			DESCRIPTION = #description#
+		  	</isNotNull>
+		  	WHERE ID = #id#
+	  	</dynamic>
+  	</update>
+  	
+  	<delete id="delete" parameterClass="long">
+  		DELETE FROM T_FRAMEWORK_PRI_RIGHT
+  		WHERE ID = #value#
+  	</delete>
+</sqlMap>   
+    
