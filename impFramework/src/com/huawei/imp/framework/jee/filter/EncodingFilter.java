@@ -56,6 +56,7 @@ public class EncodingFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) srequest;
 		request.setCharacterEncoding(targetEncoding);
+		sresponse.setCharacterEncoding(targetEncoding);
 //		if(log.isDebugEnabled())
 //		{
 //			log.debug("encoding ->" + targetEncoding);
