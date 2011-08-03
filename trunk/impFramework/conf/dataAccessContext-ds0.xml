@@ -65,10 +65,11 @@
     
 	<bean id="nativeQueryForOracle0" class="org.oproject.framework.orm.ibatis.query.OracleNativeQuery" />
 	<bean id="nativeQueryForMySQL0" class="org.oproject.framework.orm.ibatis.query.MysqlNativeQuery" />
+	<bean id="nativeQueryForPgSQL0" class="org.oproject.framework.orm.ibatis.query.PGSqlNativeQuery" />
 	<!-- 自定义SQL执行器 -->
 	<bean id="customizedSQLExecutor0" class="org.oproject.framework.orm.ibatis.CustomizedSQLExecutor"
 		init-method="init" lazy-init="false">
-		<property name="nativeQuery" ref="nativeQueryForMySQL0" />
+		<property name="nativeQuery" ref="nativeQueryForPgSQL0" />
 		<property name="sqlMapClient" ref="sqlMapClient0" />
 	</bean> 
 </beans>
