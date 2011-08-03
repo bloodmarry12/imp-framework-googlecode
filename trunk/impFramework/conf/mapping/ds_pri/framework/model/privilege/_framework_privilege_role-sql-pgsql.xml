@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_privilege_role">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="role" type="com.huawei.imp.framework.model.privilege.domain.Role"/>
+  	
+  	<resultMap id="resultMap.role" class="role">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="description" column="DESCRIPTION" />
+  	</resultMap>
+  	
+  	<resultMap id="resultMap.role2Right" class="java.util.HashMap">
+		<result property="roleID" column="ROLEID" javaType="long"/>
+		<result property="rightID" column="RIGHTID" javaType="long"/>
+	</resultMap>
+  	
+  	<insert id="insert" parameterClass="role">
+   		INSERT INTO T_FRAMEWORK_PRI_ROLE( 
+			NAME,   
+			DESCRIPTION)
+  		VALUES(
+  			#name#,
+  			#description#)
+		<selectKey resultClass="long" type="post" keyProperty="id" >
+	        select currval('seq_framework_pri_role') as ID
+	    </selectKey>
+  	</insert>
+  	
+  	<select id="selectAll" resultMap="resultMap.role">  
+   		SELECT 
+  			ID,
+			NAME,   
+			DESCRIPTION
+  		FROM 
+  			T_FRAMEWORK_PRI_ROLE T
+  	</select>
+  	
+  	<update id="update" parameterClass="role">
+  		UPDATE
+  			T_FRAMEWORK_PRI_ROLE
+  		<dynamic prepend="SET">
+	  		<isNotNull prepend="," property="name">
+		  			NAME = #name#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="description">
+		  			DESCRIPTION = #description#
+		  	</isNotNull>
+		  	WHERE ID = #id#
+	  	</dynamic>
+  	</update>
+  	
+  	<delete id="delete" parameterClass="long">
+  		DELETE FROM T_FRAMEWORK_PRI_ROLE
+  		WHERE ID = #value#
+  	</delete>
+  	
+  	<!-- 
+  	====================================
+  	=          角色与权限关系                             =
+  	====================================
+  	 -->
+  	<insert id="insertRole2Right" parameterClass="java.util.Map">  
+   		INSERT INTO T_FRAMEWORK_PRI_ROLE_RIGHT
+   			(ROLEID,
+  			RIGHTID)
+  		VALUES(#roleID#,
+  			#rightID#)
+  	</insert>
+  	
+  	<select id="selectRole2Right" resultMap="resultMap.role2Right">  
+   		SELECT 
+  			ROLEID,
+  			RIGHTID
+  		FROM T_FRAMEWORK_PRI_ROLE_RIGHT T
+  	</select>
+  	
+  	<delete id="deleteRole2RightByRole" parameterClass="long">  
+   		DELETE FROM T_FRAMEWORK_PRI_ROLE_RIGHT
+  		WHERE ROLEID = #value#
+  	</delete>
+</sqlMap>   
+    

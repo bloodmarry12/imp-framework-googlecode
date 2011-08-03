@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_privilege_right">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="right" type="com.huawei.imp.framework.model.privilege.domain.Right"/>
+  	
+  	<resultMap id="resultMap.right" class="right">
+		<result property="id" column="ID" />
+		<result property="code" column="CODE" />
+		<result property="rightName" column="RIGHTNAME"/>
+		<result property="description" column="DESCRIPTION" />
+		<result property="parent.id" column="PARENTID" javaType="long" nullValue="-1"/>
+  	</resultMap>
+  	
+  	<insert id="insert" parameterClass="right">  
+  		<selectKey resultClass="long" keyProperty="id">
+  		select seq_framework_pri_right.nextval from dual
+  		</selectKey>
+   		insert into t_framework_pri_right(
+  			id,
+			code,   
+			description,
+			rightname,
+			parentid)
+  		values(
+  			#id#,
+  			#code#,
+  			#description#,
+  			#rightName#,
+  			#parent.id#)
+  	</insert>
+  	
+  	<select id="selectAll" resultMap="resultMap.right">  
+   		select 
+  			id,
+			code,   
+			description,
+			rightname,
+			parentid
+  		from 
+  			t_framework_pri_right t
+  	</select>
+  	
+  	<update id="update" parameterClass="right">
+  		update
+  			t_framework_pri_right 
+  		<dynamic prepend="SET">
+	  		<isNotNull prepend="," property="rightName">
+		  			rightname = #rightName#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="code">
+		  			code = #code#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="description">
+		  			description = #description#
+		  	</isNotNull>
+		  	where id = #id#
+	  	</dynamic>
+  	</update>
+  	
+  	<delete id="delete" parameterClass="long">
+  		delete t_framework_pri_right
+  		where id = #value#
+  	</delete>
+  	
+  	<select id="sequence" resultClass="long">
+  		SELECT  FROM DUAL
+  	</select>
+  	
+</sqlMap>   
+    

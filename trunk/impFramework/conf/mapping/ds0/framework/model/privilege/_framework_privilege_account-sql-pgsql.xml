@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_privilege_account">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="account" type="com.huawei.imp.framework.model.privilege.domain.Account"/>
+  	
+  	<resultMap id="resultMap.account" class="account">
+		<result property="id" column="ID" javaType="long"/>
+		<result property="name" column="NAME" javaType="string"/>
+		<result property="password" column="PASSWORD" javaType="string"/>
+		<result property="status.value" column="STATUS" javaType="int"/>
+		<result property="operatorContact" column="OPERATORCONTACT" javaType="string"/>
+		<result property="operator" column="OPERATOR" javaType="string"/>
+		<result property="lastLoginTime" column="LASTLOGINTIME" javaType="java.util.Date"/>
+		<result property="role.id" column="ROLEID" javaType="long"/>
+		<result property="lastPwdModTime" column="lastpwdmodtime" javaType="date"/>
+  	</resultMap>
+  	
+  	<resultMap id="resultMap.account2Role" class="java.util.HashMap">
+		<result property="accountID" column="ACCOUNTID" javaType="long"/>
+		<result property="roleID" column="ROLEID" javaType="long"/>
+	</resultMap>
+	
+	<resultMap id="resultMap.account2Right" class="java.util.HashMap">
+		<result property="accountID" column="ACCOUNTID" javaType="long"/>
+		<result property="rightID" column="RIGHTID" javaType="long"/>
+	</resultMap>
+  	
+  	<insert id="insert" parameterClass="account">
+   		INSERT INTO T_FRAMEWORK_PRI_ACCOUNT(
+			NAME,   
+			PASSWORD,
+			STATUS,
+			OPERATORCONTACT,
+			OPERATOR,
+			ROLEID)
+  		VALUES(
+  			#name#,
+  			#password#,
+  			#status.value#,
+  			#operatorContact#,
+  			#operator#,
+  			#role.id#)
+	    <selectKey resultClass="long" type="post" keyProperty="id" >
+	        select currval('seq_framework_pri_account') as ID
+	    </selectKey>
+  	</insert>
+  	
+  	<select id="selectAll" resultMap="resultMap.account">  
+   		SELECT 
+  			ID,
+			NAME,   
+			PASSWORD,
+			STATUS,
+			OPERATORCONTACT,
+			OPERATOR,
+			LASTLOGINTIME,
+			ROLEID,
+			LASTPWDMODTIME
+  		FROM 
+  			T_FRAMEWORK_PRI_ACCOUNT T
+  	</select>
+  	
+  	<update id="update" parameterClass="account">
+  		UPDATE
+  			T_FRAMEWORK_PRI_ACCOUNT
+  		<dynamic prepend="SET">
+	  		<isNotNull prepend="," property="name">
+		  			NAME = #name#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="password">
+		  			PASSWORD = #password#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="status">
+		  			STATUS = #status.value#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="operatorContact">
+		  			OPERATORCONTACT = #operatorContact#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="operator">
+		  			OPERATOR = #operator#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="lastLoginTime">
+		  			LASTLOGINTIME = #lastLoginTime#
+		  	</isNotNull>
+		  	<isNotNull prepend="," property="lastPwdModTime">
+		  			LASTPWDMODTIME = #lastPwdModTime#
+		  	</isNotNull>
+		  	WHERE ID = #id#
+	  	</dynamic>
+  	</update>
+  	
+  	<delete id="delete" parameterClass="long">
+  		DELETE FROM T_FRAMEWORK_PRI_ACCOUNT
+  		WHERE ID = #value#
+  	</delete>
+  	<!-- 
+  	====================================
+  	=          账户与权限关系                             =
+  	====================================
+  	 -->
+  	
+  	<select id="selectAccount2Right" resultMap="resultMap.account2Right">  
+   		SELECT 
+   			ACCOUNTID,
+  			RIGHTID
+  		FROM T_FRAMEWORK_PRI_ACCOUNT_RIGHT T
+  	</select>
+  	
+  	<insert id="insertAccount2Right" parameterClass="java.util.Map">  
+   		INSERT INTO T_FRAMEWORK_PRI_ACCOUNT_RIGHT(
+   			ACCOUNTID,
+  			RIGHTID)
+  		VALUES(
+  			#accountID#,
+  			#rightID#)
+  	</insert>
+  	
+  	<delete id="deleteAccount2RightByAccount" parameterClass="long">  
+   		DELETE FROM T_FRAMEWORK_PRI_ACCOUNT_RIGHT
+  		WHERE ACCOUNTID = #value#
+  	</delete>
+  	
+  	<!-- 
+  	====================================
+  	=            记录登录时间                             =
+  	====================================
+  	 -->
+  	<insert id="inserLoginTime" parameterClass="java.util.Map" >
+  		INSERT INTO T_FRAMEWORK_PRI_ACCOUNT_LOGIN(ACCOUNTID, LOGINTIME)
+  		VALUES(#accountID#,#loginTime#)
+		<selectKey resultClass="long" type="post" keyProperty="id" >
+	        select currval('t_user_userid_seq') as id
+	    </selectKey>
+  	</insert>
+  	
+  	<select id="selectAccountIDByLoginTime" resultClass="long" parameterClass="java.util.Map">
+  		SELECT T.ID 
+  		FROM T_FRAMEWORK_PRI_ACCOUNT T
+  		WHERE 
+  		<!-- 0 == flag 按照登录查询-->
+  		<isEqual property="flag" compareValue="1">
+  		</isEqual>
+  		<!-- 1 == flag 按照未登录条件查询 -->
+  		<isEqual property="flag" compareValue="0">
+  		NOT
+  		</isEqual>
+  		EXISTS
+		(
+			SELECT 1 FROM T_FRAMEWORK_PRI_ACCOUNT_LOGIN TL 
+				WHERE T.ID = TL.ACCOUNTID
+				<isNotEmpty property="startTime">
+				AND TL.LOGINTIME &gt;= #startTime#
+				</isNotEmpty>
+				<isNotEmpty property="endTime">
+				AND TL.LOGINTIME &lt; #endTime# + 1
+				</isNotEmpty>
+		)
+  	</select>
+</sqlMap>

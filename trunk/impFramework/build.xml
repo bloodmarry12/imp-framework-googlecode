@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    CMS 框架编译脚本
+    author:  ahli
+-->
+<project name="IMP FRAMEWORK" default="pack all" basedir=".">
+	<description>Builds, tests, and runs the project cms framework.</description>
+	<!-- 定义变量 -->
+	<property name="classes.dir" value="./WebRoot/WEB-INF/classes" />
+	<property name="src.dir" value="./src" />
+	<property name="conf.dir" value="./conf" />
+	<property name="test.dir" value="./test" />
+	<property name="dev.dir" value="./dev" />
+	<property name="web.dir" value="./WebRoot" />
+	<property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
+	<!-- 定义构建目录 -->
+	<property name="build.temp.dir" value="./build/tmp" />
+	<property name="build.dist.dir" value="./build/dist" />
+	<property name="build.dir" value="./build" />
+	<property name="build.classes.dir" value="./build/classes" />
+	<property name="build.dist.mini.dir" value="./build/dist/mini" />
+	<property name="build.dist.all.dir" value="./build/dist/all" />
+
+	<!-- 引入所有运行环境包 -->
+	<path id="all-libs">
+		<fileset dir=".">
+			<include name="srcLib/*.jar" />
+			<include name="WebRoot/WEB-INF/lib/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="pack all">
+		<antcall target="echo">
+			<param name="taskName" value="打包全部框架" />
+		</antcall>
+		<antcall target="pack imp4framework-all" />
+		<antcall target="pack imp4framework-mini" />
+	</target>
+
+	<target name="pack imp4framework-all">
+		<antcall target="echo">
+			<param name="taskName" value="打包：对数据源支持、完整功能模块。" />
+		</antcall>
+		<antcall target="pack imp4framework-all WebRoot" />
+		<antcall target="pack imp4framework-all conf" />
+	</target>
+
+	<target name="pack imp4framework-all jar">
+		<antcall target="echo">
+			<param name="taskName" value="构建完整功能框架jar包" />
+		</antcall>
+		<antcall target="clean build.classes.dir" />
+		<javac target="1.6" encoding="UTF-8" destdir="${build.classes.dir}" debug="true" deprecation="false" optimize="false" failonerror="true">
+			<src path="${src.dir}" />
+			<classpath refid="all-libs" />
+		</javac>
+		<!-- 拷贝配置文件到临时目录 -->
+		<copy todir="${build.classes.dir}" overwrite="true">
+			<fileset dir="${conf.dir}">
+				<include name="mapping/**/*.xml" />
+				<include name="properties/*.properties" />
+				<include name="dataAccessContext-ds0.xml" />
+				<include name="dataAccessContext-ds_pri.xml" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.classes.dir}/META-INF" />
+		<copy todir="${build.classes.dir}/META-INF" overwrite="true">
+			<fileset dir="${web.dir}/WEB-INF/tlds">
+				<include name="*.tld" />
+			</fileset>
+		</copy>
+		<delete dir="${build.dist.all.dir}" />
+		<mkdir dir="${build.dist.all.dir}" />
+		<!-- make a jar file -->
+		<jar jarfile="./build/dist/all/imp-framework-all_1_0_2.jar" basedir="${build.classes.dir}" />
+		<delete dir="${build.classes.dir}" />
+	</target>
+
+	<target name="pack imp4framework-all WebRoot" depends="pack imp4framework-all jar">
+		<antcall target="echo">
+			<param name="taskName" value="构建完整框架产品WebRoot目录" />
+		</antcall>
+		<delete dir="${build.dist.all.dir}/WebRoot" />
+		<mkdir dir="${build.dist.all.dir}/WebRoot" />
+		<copy todir="${build.dist.all.dir}/WebRoot" overwrite="true">
+			<fileset dir="${web.dir}" excludes="**/.svn/*.*,WEB-INF/classes/**,WEB-INF/tlds/*.tld">
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.all.dir}/WebRoot/WEB-INF/lib" overwrite="true">
+			<fileset dir="${build.dist.all.dir}">
+				<include name="imp-framework*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="pack imp4framework-all conf">
+		<antcall target="echo">
+			<param name="taskName" value="build src/config folder" />
+		</antcall>
+		<delete dir="${build.dist.all.dir}/conf" />
+
+		<mkdir dir="${build.dist.all.dir}/conf" />
+		<mkdir dir="${build.dist.all.dir}/conf/mapping" />
+		<mkdir dir="${build.dist.all.dir}/conf/mapping/ds0" />
+		<mkdir dir="${build.dist.all.dir}/conf/mapping/ds1" />
+		<mkdir dir="${build.dist.all.dir}/conf/mapping/ds_pri" />
+		<mkdir dir="${build.dist.all.dir}/conf/mapping/derby" />
+		<mkdir dir="${build.dist.all.dir}/conf/mapping/derbyM" />
+		<mkdir dir="${build.dist.all.dir}/conf/properties" />
+		<copy todir="${build.dist.all.dir}/conf" overwrite="true">
+			<fileset dir="${conf.dir}">
+				<exclude name="dataAccessContext-ds0.xml" />
+				<exclude name="dataAccessContext-ds_pri.xml" />
+				<include name="*.xml" />
+				<include name="**/*.sql" />
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<!--
+		<copy todir="${build.dist.all.dir}/conf/mapping/derbyM" overwrite="true">
+			<fileset dir="${conf.dir}/mapping/derbyM">
+				<include name="**/*.sql" />
+			</fileset>
+		</copy>-->
+		<delete dir="${build.classes.dir}" />
+	</target>
+
+	<target name="pack imp4framework-mini">
+		<antcall target="echo">
+			<param name="taskName" value="打包：单数据源、精简功能模块。" />
+		</antcall>
+		<antcall target="pack imp4framework-mini WebRoot"/>
+		<antcall target="pack imp4framework-mini conf"/>
+	</target>
+
+	<target name="pack imp4framework-mini jar">
+			<antcall target="echo">
+				<param name="taskName" value="构建精简功能框架jar包" />
+			</antcall>
+			<antcall target="clean build.classes.dir" />
+			<javac target="1.6" encoding="UTF-8" destdir="${build.classes.dir}" debug="true" deprecation="false" optimize="false" failonerror="true">
+				<src path="${src.dir}" />
+				<classpath refid="all-libs" />
+			</javac>
+			<copy todir="${build.classes.dir}" overwrite="true">
+				<fileset dir="${conf.dir}">
+					<include name="mapping/ds0/**/*.xml" />
+					<include name="properties/*.properties" />
+					<include name="dataAccessContext-ds0.xml" />
+					<include name="dataAccessContext-ds0.xml" />
+				</fileset>
+			</copy>
+			<mkdir dir="${build.classes.dir}/META-INF" />
+			<copy todir="${build.classes.dir}/META-INF" overwrite="true">
+				<fileset dir="${web.dir}/WEB-INF/tlds">
+					<include name="*.tld" />
+				</fileset>
+			</copy>
+			<delete dir="${build.dist.mini.dir}" />
+			<mkdir dir="${build.dist.mini.dir}" />
+			<!-- make a jar file -->
+			<jar jarfile="./build/dist/mini/imp-framework-mini_1_0_2.jar" basedir="${build.classes.dir}" />
+			<delete dir="${build.classes.dir}" />
+	</target>
+	
+	<target name="pack imp4framework-mini WebRoot" depends="pack imp4framework-mini jar">
+			<antcall target="echo">
+				<param name="taskName" value="构建完整框架产品WebRoot目录" />
+			</antcall>
+			<delete dir="${build.dist.mini.dir}/WebRoot" />
+			<mkdir dir="${build.dist.mini.dir}/WebRoot" />
+			<copy todir="${build.dist.mini.dir}/WebRoot" overwrite="true">
+				<fileset dir="${web.dir}" excludes="**/.svn/*.*,WEB-INF/classes/**,WEB-INF/tlds/*.tld">
+					<exclude name="**/derby.jar"/>
+				</fileset>
+			</copy>
+		<copy todir="${build.dist.mini.dir}/WebRoot/WEB-INF" overwrite="true">
+				<fileset dir="${build.dir}/customize/mini">
+					<include name="web.xml" />
+					<include name="imp4Framework-servlet.xml" />
+				</fileset>
+			</copy>
+			<copy todir="${build.dist.mini.dir}/WebRoot/WEB-INF/lib" overwrite="true">
+				<fileset dir="${build.dist.mini.dir}">
+					<include name="imp-framework*.jar" />
+				</fileset>
+			</copy>
+		</target>	
+	
+	<target name="pack imp4framework-mini conf">
+			<antcall target="echo">
+				<param name="taskName" value="build src/config folder" />
+			</antcall>
+			<delete dir="${build.dist.mini.dir}/conf" />
+
+			<mkdir dir="${build.dist.mini.dir}/conf" />
+			<mkdir dir="${build.dist.mini.dir}/conf/mapping" />
+			<mkdir dir="${build.dist.mini.dir}/conf/mapping/ds0" />
+			<mkdir dir="${build.dist.mini.dir}/conf/properties" />
+			<copy todir="${build.dist.mini.dir}/conf" overwrite="true">
+				<fileset dir="${conf.dir}">
+					<include name="applicationContext.xml" />
+					<include name="applicationContext-framework.xml" />
+					<include name="dataAccessContext-txManage.xml" />
+					<include name="SqlMapConfig.xml" />
+				</fileset>
+			</copy>
+			
+			<copy todir="${build.dist.mini.dir}/conf" overwrite="true">
+						<fileset dir="${build.dir}/customize/mini">
+							<include name="applicationContext.xml" />
+							<include name="applicationContext-framework.xml" />
+							<include name="dataAccessContext-txManage.xml" />
+							<include name="jdbc.properties" />
+						</fileset>
+		  	</copy>
+		
+			<delete dir="${build.classes.dir}" />
+		</target>
+	
+	<!-- ========================== -->
+	<!--          打运行jar的源码包          -->
+	<!-- ========================== -->
+	<target name="pack cms.common-src.jar">
+		<antcall target="echo">
+			<param name="taskName" value="pack 框架运行jar的源码包" />
+		</antcall>
+		<antcall target="clean build.classes.dir" />
+		<antcall target="clean build.temp.dir" />
+		<copy todir="${build.classes.dir}" overwrite="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+		<!-- make a jar file -->
+		<jar jarfile="./build/dist/cms.common-src.jar" basedir="${build.classes.dir}" />
+	</target>
+
+	<!-- 更新发布目录 -->
+	<target name="clean build dist dir">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dist.dir}" />
+		<mkdir dir="${build.temp.dir}" />
+	</target>
+
+	<!-- 更新构建classes目录 -->
+	<target name="clean build.classes.dir">
+		<delete dir="${build.classes.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+	</target>
+
+	<target name="clean build.temp.dir">
+		<delete dir="${build.temp.dir}" />
+		<mkdir dir="${build.temp.dir}" />
+	</target>
+
+	<target name="echo">
+		<echo message="-----------------------------------------" />
+		<echo message="${taskName}" />
+		<echo message="-----------------------------------------" />
+	</target>
+</project>

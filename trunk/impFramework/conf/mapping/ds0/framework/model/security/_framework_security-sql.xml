@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SecurityVerification">  
+  	<!-- 定义对象别名 -->
+  	<resultMap id="rm.SecurityVerification" class="java.util.HashMap">
+  		<result property="id"           column="id"          javaType="string"/>
+  		<result property="uri"          column="uri"         javaType="string"/>
+  		<result property="limittype"    column="limittype"   javaType="string"/>
+  		<result property="limittime"    column="limittime"   javaType="long"/>
+  		<result property="limitnum"     column="limitnum"    javaType="int"/>
+  	</resultMap>
+  	
+  	<select id="querySecurityVerificationForList" resultMap="rm.SecurityVerification">
+  		select 
+  			id,
+			uri,
+			limittype,
+			limittime,
+  			limitnum
+  		from t_framework_sv_limit
+  	</select>
+</sqlMap>   
+    

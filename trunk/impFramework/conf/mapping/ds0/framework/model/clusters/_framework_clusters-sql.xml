@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_clusters">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_clusters" type="com.huawei.imp.framework.model.clusters.domain.SlaveDevice"/>
+  	<resultMap id="rm_clusters" class="_clusters">
+  		<result property="url"              column="url"              javaType="string"/>
+  		<result property="lastActiveTime"   column="lastActiveTime"   javaType="date"/>
+  		<result property="lastStatus"       column="lastStatus"       javaType="string"/>
+  		<result property="localhost"        column="localhost"        javaType="string"/>
+  	</resultMap>
+  	
+  	<select id="queryForList" resultMap="rm_clusters" parameterClass="string">
+  		select 
+			url,
+			lastactivetime,
+			lastStatus,
+			localhost
+  		from t_framework_clusters
+  		where localhost = #value#
+  	</select>
+  	
+  	<insert id="insert" parameterClass="_clusters">
+	insert into t_framework_clusters(
+			url,lastactivetime, laststatus, localhost)
+	values (#url#, #lastActiveTime#, #lastStatus#, #localhost#)
+  	</insert>
+  	
+  	<select id="select" resultMap="rm_clusters" parameterClass="java.util.Map">
+  		select 
+			url,
+			lastactivetime,
+			laststatus,
+			localhost
+  		from t_framework_clusters
+  		where 
+  			url=#url# and localhost = #localhost#
+  	</select>
+  	
+  	<update id="update" parameterClass="_clusters">
+  		update t_framework_clusters
+  		set 
+  			lastactivetime = #lastActiveTime#,
+			laststatus = #lastStatus#
+  		where 
+  			url=#url# and localhost = #localhost# 
+  	</update>
+  	
+  	<delete id="delete" parameterClass="_clusters">
+  		delete t_framework_clusters
+  		where url=#url# and localhost = #localhost# 
+  	</delete>
+</sqlMap>   
+    

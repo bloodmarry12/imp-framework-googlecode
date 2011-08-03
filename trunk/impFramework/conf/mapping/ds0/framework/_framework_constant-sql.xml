@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_constant">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_constant" type="com.huawei.imp.framework.constant.domain.Constant"/>
+  	<resultMap class="_constant" id="rm_constant">
+  		<result property="id" column="ID" javaType="java.lang.Long"/>
+  		<result property="value" column="VALUE" javaType="string"/>
+  		<result property="name" column="NAME" javaType="string"/>
+  		<result property="modelID" column="MODELID" javaType="java.lang.Integer"/>
+  		<result property="order" column="SEQ" javaType="java.lang.Integer"/>
+  	</resultMap>
+  	
+  	<select id="selectAll" resultMap="rm_constant">
+  		select 
+  			id,
+  			value,
+  			name,
+  			modelid,
+  			seq
+  		from t_framework_constant
+  	</select>
+  	
+  	<insert id="insert" parameterClass="_constant">
+  		insert into t_framework_constant
+  		(
+  			id,
+  			value,
+  			name,
+  			modelid,
+  			seq
+  		)
+  		values
+  		(
+  		#id#,
+  		#value#,
+  		#name#,
+  		#modelID#,
+  		#order#
+  		)
+  	</insert>
+  	
+  	<delete id="delete" parameterClass="map">
+  		delete from t_framework_constant
+  		where id in
+  		<iterate property = "ids" open= "(" close = ")" conjunction = ",">
+               #ids[]#
+        </iterate>
+  	</delete>
+  	
+  	<update id="update" parameterClass="_constant">
+  		update t_framework_constant
+  		set id = #id#,
+  		value = #value#,
+  		name = #name#,
+  		modelID = #modelID#,
+  		order = #order#
+  		where id = #id#
+  	</update>
+  	
+  	<select id="countForPage" resultClass="int">
+  		SELECT COUNT(*)
+  		FROM T_FRAMEWORK_CONSTANT
+  	</select>
+  	
+  	<select id="queryForPage" resultMap="rm_constant" parameterClass="map">
+  		SELECT 
+  			ID,
+  			VALUE,
+  			NAME,
+  			MODELID,
+  			SEQ
+  		FROM T_FRAMEWORK_CONSTANT
+  	</select>
+  	
+  	<select id="queryForlist" resultMap="rm_constant" parameterClass="map">
+  		select 
+  			id,
+  			value,
+  			name,
+  			modelid,
+  			seq
+  		from t_framework_constant
+  		where 1=1
+  		<isNotEmpty property="modelid">
+  			and modelid = #modelid#	
+  		</isNotEmpty>
+  	</select>
+  	
+  	<select id="sequence" resultClass="long">
+  		select seq_framework_constant.nextval from dual
+  	</select>
+</sqlMap>   
+    

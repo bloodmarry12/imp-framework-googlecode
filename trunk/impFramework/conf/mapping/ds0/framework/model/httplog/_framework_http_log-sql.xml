@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_http_log">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_framework_http_log" type="com.huawei.imp.framework.model.httplog.domain.HttpLoggerEntity"/>
+  	<!-- 定义结果集合 -->
+  	<resultMap id="resultMap.httplog" class="_framework_http_log">
+		<result property="id" 			column="ID"  			javaType="string"/>
+		<result property="operateDate" 	column="OPERATEDATE" 	javaType="date"/>
+		<result property="operateTime" 	column="OPERATETIME" 	javaType="java.lang.Long"/>
+		<result property="url" 			column="URL" 			javaType="string"/>
+		<result property="uid" 			column="AID" 			javaType="java.lang.Long"/>
+		<result property="parameters" 	column="PARAMETERS" 	javaType="string"/>
+		<result property="description" 	column="DESCRIPTION" 	javaType="string"/>
+		<result property="operateTime" 	column="OPERATETIME" 	javaType="java.lang.Long"/>
+		<result property="remoteIP" 	column="REMOTEIP" 		javaType="string"/>
+		<result property="lastUrl"      column="LASTURL"        javaType="string"/>
+		<result property="sessionID"    column="SESSIONID"      javaType="string"/>
+		<result property="server"       column="SERVER"         javaType="string"/>
+  	</resultMap>
+  	
+	<insert id="insert" parameterClass="_framework_http_log">
+		insert into t_framework_http_log(
+			id,
+  			operatedate,
+  			url,
+  			aid,
+  			parameters,
+  			description,
+  			operatetime,
+  			remoteip,
+  			lasturl,
+  			sessionid,
+  			server
+		)values(
+			#id#,
+  			#operateDate#,
+  			#url#,
+  			#uid#,
+  			#parameters#,
+  			#description#,
+  			#operateTime#,
+  			#remoteIP#,
+  			#lastUrl#,
+  			#sessionID#,
+  			#server#
+		)
+	</insert>
+	
+	<delete id="delete" parameterClass="_framework_http_log">
+		delete t_framework_http_log where id=#id#
+	</delete>
+</sqlMap>   
+    

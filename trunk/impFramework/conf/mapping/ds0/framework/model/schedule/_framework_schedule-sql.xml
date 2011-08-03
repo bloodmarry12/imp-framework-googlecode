@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_schedule">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_framework_schedule" type="com.huawei.imp.framework.model.schedule.domain.ScheduleDef"/>
+  	<!-- 定义结果集合 -->
+  	<resultMap id="resultMap.schedule" class="_framework_schedule">
+		<result property="id" column="ID"  javaType="long"/>
+		<result property="taskName" column="TASKNAME" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="status" column="STATUS" javaType="int"/>
+		<result property="cexp" column="CEXP" />
+		<result property="beanName" column="BEANNAME" />
+		<result property="methodName" column="METHODNAME" />
+		<result property="concurrent" column="CONCURRENT" />
+		<result property="host" column="HOSTIP" />
+		<result property="parameter" column="PARAMETER" />
+  	</resultMap>
+  	<!-- 查询语句 -->
+  	<select id="select" resultMap="resultMap.schedule" parameterClass="long">  
+   		SELECT 
+  			T.ID,
+  			T.TASKNAME,
+  			T.DESCRIPTION,
+  			T.STATUS,
+  			T.CEXP,
+  			T.BEANNAME,
+  			T.METHODNAME,
+  			T.CONCURRENT,
+  			T.HOSTIP,
+  			T.PARAMETER
+  		FROM 
+  			T_FRAMEWORK_SCHEDULE T
+  		WHERE 
+  			T.ID = #value#
+  	</select>
+  	
+  	<update id="updateStatus" parameterClass="map">
+  		UPDATE T_FRAMEWORK_SCHEDULE T
+  		SET 
+			T.STATUS = #status#
+		WHERE 
+			T.ID = #id#	
+  	</update>
+  	
+  	<update id="update" parameterClass="map">
+  		UPDATE T_FRAMEWORK_SCHEDULE T
+  		SET 
+  			T.BEANNAME = #beanName#,
+  			T.METHODNAME = #methodName#,
+			T.CEXP = #cexp#,
+			T.CONCURRENT = #concurrent#,
+			T.HOSTIP = #host#,
+			T.PARAMETER = #parameter#
+		WHERE 
+			T.ID = #id#
+  	</update>
+  	
+  	<select id="query" resultMap="resultMap.schedule">
+	    SELECT
+	      	T.ID,
+  			T.TASKNAME,
+  			T.DESCRIPTION,
+  			T.STATUS,
+  			T.CEXP,
+  			T.BEANNAME,
+  			T.METHODNAME,
+  			T.CONCURRENT,
+  			T.HOSTIP,
+  			T.PARAMETER
+	    FROM
+	    	T_FRAMEWORK_SCHEDULE T
+	    ORDER BY T.ID DESC
+  	</select>
+  	
+	<select id="queryByHost" resultMap="resultMap.schedule" parameterClass="string">
+	    SELECT
+	      	T.ID,
+  			T.TASKNAME,
+  			T.DESCRIPTION,
+  			T.STATUS,
+  			T.CEXP,
+  			T.BEANNAME,
+  			T.METHODNAME,
+  			T.CONCURRENT,
+  			T.HOSTIP,
+  			T.PARAMETER
+	    FROM
+	    	T_FRAMEWORK_SCHEDULE T
+	    WHERE 
+	    	T.HOSTIP is NULL or T.HOSTIP = #value#
+	    ORDER BY T.ID DESC
+  	</select>
+</sqlMap>   
+    

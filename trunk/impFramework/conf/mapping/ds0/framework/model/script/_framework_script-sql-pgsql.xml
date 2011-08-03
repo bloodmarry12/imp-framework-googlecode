@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ScriptDomain">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="ScriptDomain" type="com.huawei.imp.framework.model.script.domain.ScriptDomain"/>
+  	
+  	<resultMap class="ScriptDomain" id="rm.ScriptDomain">
+  		<result property="id"       column="id"/>
+  		<result property="name"     column="name"/>
+  		<result property="content"  column="content"/>
+  		<result property="date"     column="loaddate"/>
+  	</resultMap>
+  	
+  	<sql id="stmt_select">
+	SELECT ID,
+		NAME,
+		CONTENT,
+		LOADDATE
+	FROM T_FRAMEWORK_SCRIPT
+	</sql>
+	
+	<select id="load" parameterClass="string" resultMap="rm.ScriptDomain">
+		<include refid="stmt_select"/>
+		WHERE ID = #value#
+	</select>
+	
+	<select id="queryScriptDomainForList" parameterClass="java.util.Map" resultMap="rm.ScriptDomain">
+		<include refid="stmt_select"/>
+	</select>
+</sqlMap>   
+    

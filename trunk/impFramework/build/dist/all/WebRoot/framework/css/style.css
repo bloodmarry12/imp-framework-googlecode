@@ -1,0 +1,135 @@
+* { margin: 0; outline: none; } 
+html, body { height: 100%; }
+
+body { color: #666; font: normal 13px/1.2em Verdana, Arial, Helvetica, Sans-Serif; margin: 0; padding: 0; line-height: 1.5em; word-spacing: 0.1em; }
+
+
+/*CONTENT COLUMN*/
+
+a, a:link, a:visited { color: #666; text-decoration: underline; cursor: pointer; }
+
+a:hover { color: #4682b4; text-decoration: none; }
+
+
+/*STYLES*/
+
+h2 { font-size: 1.5em; font-weight: bold; line-height: 1em; }
+
+h3 { font-size: 1.5em; font-weight: normal; line-height: 1em; margin: 0 0 16px 0; }
+
+h4 { font-size: 1.3em; font-weight: normal; line-height: 1em; margin: 0 0 8px 0; }
+
+p { margin: 0 0 16px 0; }
+
+p strong { font-size: 1.2em; }
+
+blockquote { border: 1px solid #4682b4; border-top-width: 0; margin: -5px 20px 16px 20px; padding: 0; }
+
+blockquote p { font-size: 1.1em; letter-spacing: 1px; padding: 5px 10px; }
+
+blockquote em { font-size: 1.3em; color: #4682b4; line-height: 1.6em; }
+
+.listnumber { color: #4682b4; float: left; font-size: 3.2em; line-height: 83%; padding-right: 3px; }
+
+#contentcolumn ul { list-style-type: none; margin: 0 0 16px; padding: 0; }
+
+#contentcolumn li { clear: both; margin-bottom: 8px; }
+
+
+.btn {  background: #4682b4 url(images/buttonOFF.png) repeat-x 0% 0%; margin:0 15px; padding: .1em 0.4em; text-align: center; border:0; color: #fff;  }
+
+#btn { list-style-type: none; padding: .5em 0 0 10px;  text-align:center; }
+
+#btn .btn { background: #4682b4 url(images/buttonOFF.png) repeat-x 0% 0%; margin:0 15px; padding: .2em 0.4em; text-align: center; border:0; color: #fff; }
+
+
+.innertube { margin: 5px 70px 0 0; }
+
+.shadow { background: url(images/shadow.png) no-repeat bottom right; padding: 0 7px 7px 0; }
+
+.text_left { text-align: left; }
+
+.text_center { text-align: center; }
+
+.text_right { text-align: right; }
+
+.vertical_middle { vertical-align: middle; }
+
+.form_list table{
+	margin:0 0 10px;
+	padding:5px 10px;
+	border: 1px solid #4682b4;
+	border-width: 1px 0 0 1px;
+	border-collapse: collapse;
+}
+.form_list thead th{
+	border: 1px solid #4682b4;
+	border-width:0 1px 1px 0;
+	background: #fff url(images/greybox.png) repeat-x 0% 30%;
+}
+.form_list tbody td{
+	border: 1px solid #4682b4;
+	border-width:0 1px 1px 0;
+	background: #FBFBFB;
+}
+.form_list span{
+	cursor:pointer;	text-decoration:underline;
+}
+.form_list span:hover{
+	color: #4682b4;text-decoration:none;
+}
+
+.pagination{
+	margin:10px 0 0;
+	padding:3px 10px 0 0;
+	color:#666;
+	text-align:right;
+	font-weight:normal;
+	font-size:12px;
+}
+.pagination input{
+	vertical-align:middle;
+}
+.pagination .input{
+	width:35px;
+	height:15px;
+	border:1px #CCD4DC solid;
+	cursor:text;
+}
+.pagination .btn{
+	margin:0;
+	padding:0;
+	width:auto;
+	height:15px;
+	line-height:15px;
+	color:#026B91;
+	vertical-align:text-bottom;
+	border:0;
+	background:none;
+	text-decoration:underline;
+	cursor:pointer;
+}
+.pagination .btn:hover{
+	background:transparent;	
+	text-decoration:none;
+	cursor:pointer;
+}
+.pagination .dis_btn{
+	padding:0;
+	border:0;
+	background:none;
+	text-decoration:none;
+	height:15px;
+	line-height:15px;
+}
+
+.pagination .gbtn{
+	width:42px;
+	height:20px;
+	border:0;
+	font-weight:bold;	
+	text-align:center;
+	background:url(images/bg_go.gif) repeat-x;
+	border:1px #A2C1CC solid;
+	cursor:pointer;
+}

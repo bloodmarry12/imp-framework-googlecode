@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE EXCELCONFIG PUBLIC "-//huawei/imp/framework/excel" "excelConfig.dtd">
+<!-- 
+===============================================
+= CMS4期,Excel文件配置
+= ahli
+================================================
+-->
+<excelConfig>
+	<typeHandlers>
+	<!-- 
+		<typeHandler type="" class="" constructParameter="1"/>
+	 -->
+	</typeHandlers>
+ <!-- Excel文件 -->
+ <files>
+  <!-- 
+  配置每个Excel文件模板，系统生成文件按照该标签的ID属性进行获取，
+  请不要将ID配置重复。
+   -->
+  <!-- 版权批量引入Excel模板 -->
+  <file name="test">
+   <sheet name="sheet1">
+     <column title="版权名称" 		property="name" reg="[\S|\s]{1,32}"/>
+     <column title="版权名称首字母" 	property="nameFirstChar" reg="[A-z]{1}"/>
+     <column title="歌曲类型" 		property="songKind.name" reg="[\S]{1,10}"/>
+     <column title="语种" 			property="language.name" reg="[\S]{1,10}"/>
+     <column title="歌手名称" 		property="singerName" reg="[\S|\s]{1,32}"/>
+     <column title="歌手名首字母" 		property="singerNameFirstChar" reg="[A-z]{1}"/>
+     <column title="歌手类型" 		property="singerType.name" reg="[\S]{1,10}"/>
+     <column title="专辑名称" 		property="specialName" reg="[\S|\s]{1,10}"/>
+     <column title="ISRC" 			property="isrc"/>
+     <column title="词作者" 			property="wordAuthor" reg="[\S|\s]{1,10}"/>
+     <column title="曲作者" 			property="songAuthor" reg="[\S|\s]{1,10}"/>
+     <column title="录音版权方" 		property="reCording" reg="[\S|\s]{1,50}"/>
+     <column title="发行时间" 		property="issueTime" type="date" />
+     <column title="有效期" 			property="validPeriod" type="date"/>
+     <column title="描述信息" 		property="description" reg="[\S|\s]{1,256}"/>
+     <column title="歌曲文件路径" 	property="songUrl"/>
+     <column title="歌词文件路径" 	property="lyricUrl"/>
+   </sheet>
+  </file>
+  <file name="test2">
+   <sheet name="sheet1">
+     <column title="版权名称" 		property="name" reg="[\S|\s]{1,32}"/>
+     <column title="版权名称首字母" 	property="nameFirstChar" />
+     <column title="歌曲类型" 		property="songKind" />
+     <column title="创建时间" 		property="createDate" type="date"/>
+   </sheet>
+  </file>
+  <file name="test3">
+   <sheet name="sheet1">
+     <column title="版权名称" 		property="name" reg="[\S|\s]{1,32}"/>
+     <column title="版权名称首字母" 	/>
+     <column title="歌曲类型" 		/>
+   </sheet>
+  </file>
+  <file name="createBatchAddOrder">
+  		<sheet name="sheet1">
+	  			<column title="版权ID" 	property="copyrightIDs"/>
+		  		<column title="版本名称" 	property="versionName"/>
+		</sheet>
+  </file>
+  <file name="testDate">
+  		<sheet name="sheet1">
+	  			<column title="日期" 	property="date" type="date"/>
+	  			<column title="字符串" 	property="str" 	reg="[\S|\s]{1}"/>
+		</sheet>
+  </file>
+  
+ </files>
+</excelConfig>

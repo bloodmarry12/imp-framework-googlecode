@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="_framework_script">
+	<typeAlias alias="script" type="com.huawei.imp.framework.console.script.domain.Script"/>
+  	<!-- 定义结果集合 -->
+  	<resultMap id="resultMap.script" class="script">
+		<result property="operateID" 		     column="operateID"/>
+		<result property="token"                 column="token"/>
+        <result property="script1"               column="script1"/>
+        <result property="script2"               column="script2"/>
+        <result property="script3"               column="script3"/>
+		<result property="type"                  column="type"/>
+		<result property="createTime"            column="createTime"/>
+		<result property="lastExecuteTime"       column="lastExecuteTime"/>
+		<result property="count"                 column="count"/>
+		<result property="result"                column="result"/>
+		<result property="userID"                column="userid"/>
+		<result property="datasource"            column="datasourcetype"/>
+  	</resultMap>
+		
+  	
+  	<!-- 查询语句 -->
+  	<select id="select" resultMap="resultMap.script" parameterClass="string">
+   		
+  	</select>
+  	  	
+  	<insert id="insert" parameterClass="script">
+  	     insert into 
+  	            t_framework_script_log
+  	            (
+  	                operateid,
+  	                token,
+  	                type,
+  	                script1,
+  	                script2,
+  	                script3,
+  	                createtime,
+  	                lastExecuteTime,
+  	                count,
+  	                result,
+  	                userid,
+  	                datasourcetype
+  	            )
+  	            values
+  	            (
+  	                #operateID#,
+  	                #token#,
+  	                #type#,
+  	                #script1#,
+  	                #script2#,
+  	                #script3#,
+  	                #createTime#,
+  	                #lastExecuteTime#,
+  	                #count#,
+  	                #result#,
+  	                #userID#,
+  	                #datasource#
+  	            )
+  	</insert>
+</sqlMap> 
+    

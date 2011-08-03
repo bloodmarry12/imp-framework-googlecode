@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="FrameworkFtp">  
+  	<!-- 定义对象别名 -->
+  	<typeAlias alias="_ftp" type="com.huawei.imp.framework.model.ftp.domain.FtpConfig"/>
+  	
+  	<resultMap id="rm_ftp" class="_ftp">
+  		<result property="ftpAlias"  column="FTPALIAS"  javaType="string"/>
+  		<result property="userName"  column="USERNAME"  javaType="string"/>
+  		<result property="userPaswd" column="USERPASSWORD" javaType="string"/>
+  		<result property="port"      column="PORT"      javaType="int"/>
+  		<result property="ip"        column="IP"        javaType="string"/>
+  	</resultMap>
+  	
+  	<select id="queryFtpConfigForList" resultMap="rm_ftp">
+  		SELECT 
+  			FTPALIAS,
+			USERNAME,
+			USERPASSWORD,
+			PORT,
+  			IP
+  		FROM T_FRAMEWORK_FTP
+  	</select>
+  	
+  	<select id="select" resultMap="rm_ftp" parameterClass="string">
+  		SELECT 
+  			FTPALIAS,
+			USERNAME,
+			USERPASSWORD,
+			PORT,
+  			IP
+  		FROM T_FRAMEWORK_FTP T
+  		WHERE 
+  			T.FTPALIAS = #value#
+  	</select>
+  	
+  	<update id="update" parameterClass="_ftp">
+  		UPDATE T_FRAMEWORK_FTP
+  		SET 
+  			USERNAME = #userName#,
+  			USERPASSWORD = #userPaswd#,
+			PORT = #port#,
+			IP = #ip#
+  		WHERE 
+  			FTPALIAS = #ftpAlias#
+  	</update>
+</sqlMap>   
+    
