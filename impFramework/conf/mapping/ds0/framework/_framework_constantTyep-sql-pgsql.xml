@@ -24,12 +24,12 @@
   	
   	<!-- 更新 -->
   	<update id="update" parameterClass="_constantType">
-  		UPDATE T_FRAMEWORK_CONSTANT_MODEL T
+  		UPDATE T_FRAMEWORK_CONSTANT_MODEL
   		SET 
-			T.MODELID = #modelID#,
-			T.MODELNAME = #modelName#
+			MODELID = #modelID#,
+			MODELNAME = #modelName#
 		WHERE 
-			T.MODELID = #modelID#	
+			MODELID = #modelID#	
   	</update> 
   	
   	

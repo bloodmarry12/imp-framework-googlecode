@@ -22,13 +22,13 @@
   	</select>
   	
   	<update id="update" parameterClass="sysConfig">
-  		UPDATE T_FRAMEWORK_CONFIG T
+  		UPDATE T_FRAMEWORK_CONFIG
   		SET 
-			T.NAME = #name#,
-			T.VALUE = #value#,
-			T.DESCRIPTION = #description#
+			NAME = #name#,
+			VALUE = #value#,
+			DESCRIPTION = #description#
 		WHERE 
-			T.KEY = #key#	AND T.ADDRESS = #address#
+			KEY = #key#	AND ADDRESS = #address#
   	</update>
   	
   	<!-- 查询语句 -->
