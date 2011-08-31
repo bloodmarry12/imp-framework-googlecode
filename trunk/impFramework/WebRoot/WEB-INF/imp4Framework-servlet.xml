@@ -37,9 +37,10 @@
 		<property name="defaultViews">
 			<list>
 				<!-- for application/json -->
-				<bean
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
-				<!-- for application/xml -->
+				<bean class="com.huawei.imp.framework.spring.IMPMappingJacksonJsonView" />
+				<!--
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+				 for application/xml -->
 				<!-- <bean class="org.springframework.web.servlet.view.xml.MarshallingView" 
 					> <property name="marshaller"> <bean class="org.springframework.oxm.xstream.XStreamMarshaller"/> 
 					</property> </bean> -->
