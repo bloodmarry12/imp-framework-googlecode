@@ -15,7 +15,7 @@ import java.util.List;
  * 缓存数据访问接口
  * 定于缓存的数据访问操作
  * @author ahli
- * @version IMPV100R001DA0, Jun 9, 2009 
+ * @version IMPV100R001DA0, Jun 9, 2009  
  * @since CMS IMPV100R001DA0
  */
 public interface CacheDAO
