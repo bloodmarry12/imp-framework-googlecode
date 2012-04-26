@@ -44,7 +44,7 @@
 	<bean id="sqlExecutor" class="com.ahli.util.OracleSqlExecutor"></bean>
 	 -->
 	
-	<bean id="sqlMapClient0" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"> 
+	<bean id="sqlMapClient0" class="org.oproject.framework.orm.ibatis.SqlMapClientFactoryBean"> 
         <property name="dataSource" ref="dataSource0"></property>
         <property name="lobHandler" ref="defaultLobHandler"/>
         <property name="configLocation"> 
