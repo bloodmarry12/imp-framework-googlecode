@@ -190,7 +190,7 @@ public class ScheduleServiceImpl implements ScheduleService, Constants, ReloadSu
 			// 设置克隆表达式
 			cronTrigger = newTrigger().withIdentity(def.getTaskName(),Scheduler_GROUP_NAME).withSchedule(cronSchedule(def.getCexp())).build();
 		}
-		catch (ParseException e)
+		catch (Exception e)
 		{
 			// 出现异常，则抛出业务层异常信息。
 			throw new FrameworkBusinessException("common.timetask.exception.cexpError",
